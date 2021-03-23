@@ -1,39 +1,19 @@
 import operator
-import sqlite3
 import imgkit
 from telegram import Update
 from telegram.ext import CommandHandler
 from auth import auth
+from utils import utils
+from sql import sql
 
-def execute(conn, command):
-	cur = conn.cursor()
-	cur.execute(command)
-	return cur.fetchall()
+conn = sql.sql()
 
-def count(conn, table):
-	cur = conn.cursor()
-	cur.execute("SELECT count(*) FROM " + table)
-	return cur.fetchall()[0][0]
-
-def isEmpty(conn, table):
-	return (count(conn, table) == 0)
-
-def getLichessID(tid):
-	conn = sqlite3.connect(r".db/avenabot.db")
-	player_list = execute(conn, "SELECT * FROM partecipanti")
-	for p in player_list:
-		if(p[1] == tid):
-			conn.close()
-			return p[2]
-	conn.close()
-	return 'null'	
-
-def fetchResults(conn, group):
+def fetchResults(group):
 	html = "<div><table border=\"1\" cellspacing=\"0\" cellpadding=\"4\" align=\"center\"><tr><b>Risultati girone "
 	html += group
 	table = "girone" + group
 	html += "<tr><td></td>"
-	player_list = execute(conn, "SELECT * FROM " + table)
+	player_list = conn.execute("SELECT * FROM " + table + ";")
 	for p in player_list:
 		html += "<td align=\"center\">" + str(p[1]) + "</td>"
 	html += "</tr>"
@@ -44,7 +24,7 @@ def fetchResults(conn, group):
 		else:
 			html += "<tr bgcolor=\"#d7edb4\">"
 		k += 1
-		html += "<td>(" + str(p[1]) + ") " + getLichessID(p[1]) + "</td>"
+		html += "<td>(" + str(p[1]) + ") " + utils.getLichessID(p[1]) + "</td>"
 		for r in p[2]:
 			if(r != ","):
 				html += "<td width=\"20px\" align=\"center\">"
@@ -59,10 +39,10 @@ def fetchResults(conn, group):
 
 def risultati(update, context):
 	if(auth.auth(update, context)):
-		conn = sqlite3.connect(r".db/avenabot.db")
-		if(isEmpty(conn, 'gironeF')):
-			if(not isEmpty(conn, 'gironeA')):
-				html = fetchResults(conn, 'A') + fetchResults(conn, 'B')
+		conn.open(r".db/avenabot.db")
+		if(conn.is_empty('gironeF')):
+			if(not conn.is_empty('gironeA')):
+				html = fetchResults('A') + fetchResults('B')
 				options={
 					'quiet': '',
 					'width': '600',
@@ -71,7 +51,7 @@ def risultati(update, context):
 				context.bot.send_photo(update.effective_chat.id, open('./out.jpg', 'rb'))
 				conn.close()
 		else:
-			html = fetchResults(conn, 'F')
+			html = fetchResults('F')
 			options={
 				'quiet': '',
 				'width': '400',

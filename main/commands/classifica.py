@@ -1,41 +1,19 @@
 import operator
-import sqlite3
 import imgkit
-from sqlite3 import Error
 from telegram import Update
 from telegram.ext import CommandHandler
 from auth import auth
-
-def execute(conn, command):
-	cur = conn.cursor()
-	cur.execute(command)
-	return cur.fetchall()
-
-def count(conn, table):
-	cur = conn.cursor()
-	cur.execute("SELECT count(*) FROM " + table)
-	return cur.fetchall()[0][0]
-
-def isEmpty(conn, table):
-	return (count(conn, table) == 0)
-
-def getLichessID(tid):
-	conn = sqlite3.connect(r".db/avenabot.db")
-	player_list = execute(conn, "SELECT * FROM partecipanti")
-	for p in player_list:
-		if(p[1] == tid):
-			conn.close()
-			return p[2]
-	conn.close()
-	return 'null'	
+from sql import sql
+from utils import utils
 
 def classifica(update, context):
+	conn = sql.sql()
 	if(auth.auth(update, context)):
-		conn = sqlite3.connect(r".db/avenabot.db")
-		if(not isEmpty(conn, "gironeF")):
+		conn.open(r".db/avenabot.db")
+		if(not conn.is_empty("gironeF")):
 			html = "<div>"
 			html += "<br><table border=\"1\" cellspacing=\"0\" cellpadding=\"2\" align=\"center\"><tr><b>Classifica girone finale"
-			player_list = execute(conn, "SELECT * FROM gironeF")
+			player_list = conn.execute("SELECT * FROM gironeF;")
 			res_list = []
 			for p in player_list:
 				res = []
@@ -60,7 +38,7 @@ def classifica(update, context):
 					html += "<tr bgcolor=\"#e9ede4\"><td>"
 				else:
 					html += "<tr bgcolor=\"#d7edb4\"><td>" 
-				html += getLichessID(p[0]) + "</td>"
+				html += utils.getLichessID(p[0]) + "</td>"
 				k += 1
 				j = 0
 				for r in p[1]:
@@ -88,7 +66,7 @@ def classifica(update, context):
 			imgkit.from_string(html, 'out.jpg', options=options)
 			context.bot.send_photo(update.effective_chat.id, open('./out.jpg', 'rb'))
 			conn.close()		
-		elif(not isEmpty(conn, "gironeA")):
+		elif(not conn.is_empty("gironeA")):
 			html = "<div>"
 			for l in range(2):
 				html += "<br><table border=\"1\" cellspacing=\"0\" cellpadding=\"2\" align=\"center\"><tr><b>Classifica girone "
@@ -99,7 +77,7 @@ def classifica(update, context):
 				else:
 					table = "gironeB"
 					html += "B:</b></tr>"
-				player_list = execute(conn, "SELECT * FROM " + table)
+				player_list = conn.execute("SELECT * FROM " + table + ";")
 				res_list = []
 				for p in player_list:
 					res = []
@@ -124,7 +102,7 @@ def classifica(update, context):
 						html += "<tr bgcolor=\"#e9ede4\"><td>"
 					else:
 						html += "<tr bgcolor=\"#d7edb4\"><td>" 
-					html += getLichessID(p[0]) + "</td>"
+					html += utils.getLichessID(p[0]) + "</td>"
 					k += 1
 					j = 0
 					for r in p[1]:
