@@ -49,6 +49,7 @@ def risultati(update, context):
 				}
 				imgkit.from_string(html, 'out.jpg', options=options)
 				context.bot.send_photo(update.effective_chat.id, open('./out.jpg', 'rb'))
+				logging.info("Replied to message.")
 				conn.close()
 		else:
 			html = fetchResults('F')
@@ -58,6 +59,7 @@ def risultati(update, context):
 			}
 			imgkit.from_string(html, 'out.jpg', options=options)
 			context.bot.send_photo(update.effective_chat.id, open('./out.jpg', 'rb'))
+			logging.info("Replied to message.")
 			conn.close()
 			pass
 	else:

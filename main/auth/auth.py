@@ -8,6 +8,7 @@ from telegram.ext import (
     ConversationHandler,
     CallbackContext,
 )
+import logging
 
 def execute(conn, command):
 	cur = conn.cursor()
@@ -21,6 +22,9 @@ def exists(conn, table, key):
 
 def auth(update, context):
 	chatID = update.effective_chat.id
+	user = update.message.from_user.username
+	msg_text = update.message.text
+	logging.info("Received message from " + user + " in chat " + str(chatID) + ": " + msg_text)
 	if(chatID > 0):
 		d = dirname(dirname(abspath(__file__))) + "/.db/avenabot.db"
 		conn = sqlite3.connect(d)
