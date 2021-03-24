@@ -37,7 +37,7 @@ def classifica(update, context):
                     html += "<tr bgcolor=\"#e9ede4\"><td>"
                 else:
                     html += "<tr bgcolor=\"#d7edb4\"><td>"
-                html += utils.getLichessID(p[0]) + "</td>"
+                html += utils.get_lichess_id(p[0]) + "</td>"
                 k += 1
                 j = 0
                 for r in p[1]:
@@ -99,7 +99,7 @@ def classifica(update, context):
                         html += "<tr bgcolor=\"#e9ede4\"><td>"
                     else:
                         html += "<tr bgcolor=\"#d7edb4\"><td>"
-                    html += utils.getLichessID(p[0]) + "</td>"
+                    html += utils.get_lichess_id(p[0]) + "</td>"
                     k += 1
                     j = 0
                     for r in p[1]:

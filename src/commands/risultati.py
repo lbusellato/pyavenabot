@@ -24,7 +24,7 @@ def fetch_results(group):
         else:
             html += "<tr bgcolor=\"#d7edb4\">"
         k += 1
-        html += "<td>(" + str(p[1]) + ") " + utils.getLichessID(p[1]) + "</td>"
+        html += "<td>(" + str(p[1]) + ") " + utils.get_lichess_id(p[1]) + "</td>"
         for r in p[2]:
             if r != ",":
                 html += "<td width=\"20px\" align=\"center\">"
