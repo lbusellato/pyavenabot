@@ -10,3 +10,9 @@ def getLichessID(tid):
 			return p[2]
 	conn.close()
 	return 'null'	
+
+def get_elo_delta(p1_elo, p2_elo, outcome):
+	expectation_to_win = 1 / (1 + pow(10, (p2_elo - p1_elo) / 400))
+	elo_K = 32
+	delta = int(elo_K * (outcome - expectation_to_win))
+	return delta

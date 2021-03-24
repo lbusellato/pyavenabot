@@ -6,6 +6,7 @@ from commands import (
 	partecipanti, 
 	risultati, 
 	classifica,
+	partite,
 )
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',level=logging.INFO,handlers=[
@@ -26,6 +27,7 @@ def main() -> None:
 	dispatcher.add_handler(partecipanti.handler)
 	dispatcher.add_handler(risultati.handler)
 	dispatcher.add_handler(classifica.handler)
+	dispatcher.add_handler(partite.handler)
 
 	# Start the Bot
 	updater.start_polling()
