@@ -1,5 +1,6 @@
 import logging
 import sqlite3
+from sqlite3 import Error
 
 
 class sql:
@@ -7,8 +8,11 @@ class sql:
 	__open = False
 
 	def open(self, path):
-		self.__conn = sqlite3.connect(path)
-		self.__open = True
+		try:
+			self.__conn = sqlite3.connect(path)
+			self.__open = True
+		except Error as e:
+			logging.error("Errore SQL")
 
 	def execute(self, query):
 		if self.__open:
@@ -18,6 +22,7 @@ class sql:
 					query = query.strip()
 					cur.execute(query)
 					query_result = cur.fetchall()
+					self.__conn.commit()
 					return query_result
 				except sqlite3.Error as e:
 					logging.error("SQL error")
