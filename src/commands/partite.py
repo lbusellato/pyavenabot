@@ -16,7 +16,7 @@ def partite(update, context):
                 game_list = conn.execute("SELECT * FROM girone" + group + "games;")
                 reply += "Partite girone " + group + ":"
                 for g in game_list:
-                    reply += "\n" + utils.getLichessID(g[1]) + " vs " + utils.getLichessID(g[2]) + ":\n"
+                    reply += "\n" + utils.get_lichess_id(g[1]) + " vs " + utils.get_lichess_id(g[2]) + ":\n"
                     reply += g[3]
                 context.bot.send_message(chat_id=update.effective_chat.id, text=reply, disable_web_page_preview=True)
                 conn.close()
