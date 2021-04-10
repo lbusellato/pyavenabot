@@ -57,4 +57,5 @@ def miepartite(update, context):
         pass
 
 
+cmd = utils.Command("/miepartite", "Mostra la lista di partite che devi ancora giocare con il colore che devi usare.")
 handler = CommandHandler('miepartite', miepartite)

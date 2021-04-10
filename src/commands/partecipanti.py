@@ -2,6 +2,7 @@ from telegram.ext import CommandHandler
 import imgkit
 import logging
 from auth import auth
+from utils import utils
 from sql import sql
 
 
@@ -21,7 +22,10 @@ def partecipanti(update, context):
             html += "<td>@" + str(p[3]) + "</td>"
             html += "<td>" + str(p[4]) + "</td>"
             if not conn.is_empty("gironeA"):
-                html += "<td align=\"center\">" + str(p[5]) + "</td>"
+                if p[5] is None:
+                    html += "<td align=\"center\">-</td>"
+                else:
+                    html += "<td align=\"center\">" + str(p[5]) + "</td>"
             html += "</tr>"
         options = {
             'quiet': '',
@@ -35,4 +39,5 @@ def partecipanti(update, context):
         pass
 
 
+cmd = utils.Command("/partecipanti", "Mostra la lista di partecipanti attualmente iscritti al torneo.")
 handler = CommandHandler('partecipanti', partecipanti)

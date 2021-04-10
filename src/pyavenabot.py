@@ -8,8 +8,11 @@ from commands import (
     classifica,
     partite,
     miepartite,
+    iscrivimi,
+    inserisci,
+    help,
+    seed,
 )
-from utils import utils
 
 logging.basicConfig(
 	format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -35,6 +38,10 @@ def main() -> None:
     dispatcher.add_handler(classifica.handler)
     dispatcher.add_handler(partite.handler)
     dispatcher.add_handler(miepartite.handler)
+    dispatcher.add_handler(iscrivimi.handler)
+    dispatcher.add_handler(inserisci.handler)
+    dispatcher.add_handler(help.handler)
+    dispatcher.add_handler(seed.handler)
 
     # Start the Bot
     updater.start_polling()

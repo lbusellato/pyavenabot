@@ -133,4 +133,5 @@ def classifica(update, context):
         pass
 
 
+cmd = utils.Command("/classifica", "Mostra la classifica dei gironi.")
 handler = CommandHandler('classifica', classifica)

@@ -25,7 +25,7 @@ class sql:
 					self.__conn.commit()
 					return query_result
 				except sqlite3.Error as e:
-					logging.error("SQL error")
+					logging.error("SQL error: " + e)
 		else:
 			logging.warning("DB connection not initialized")
 			return None

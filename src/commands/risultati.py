@@ -67,4 +67,5 @@ def risultati(update, context):
         pass
 
 
+cmd = utils.Command("/risultati", "Mostra i risultati delle partite.")
 handler = CommandHandler('risultati', risultati)

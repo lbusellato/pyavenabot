@@ -1,5 +1,6 @@
 from telegram.ext import CommandHandler
 from auth import auth
+from utils import utils
 import logging
 
 
@@ -12,4 +13,5 @@ def start(update, context):
         pass
 
 
+cmd = utils.Command("/start", "")
 handler = CommandHandler('start', start)

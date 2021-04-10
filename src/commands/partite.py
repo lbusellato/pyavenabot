@@ -40,4 +40,5 @@ def partite(update, context):
         pass
 
 
+cmd = utils.Command("/partite Girone", "Mostra la lista di link alle partite finora giocate nel girone specificato.")
 handler = CommandHandler('partite', partite)
